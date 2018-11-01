@@ -88,7 +88,9 @@ abstract class Module extends ServiceProvider
      */
     public function getStudlyName()
     {
-        return Str::studly($this->name);
+        $name = explode('_', $this->name);
+
+        return sizeof($name) > 1? Str::studly($name[0])."_".Str::studly($name[1]): Str::studly($this->name);
     }
 
     /**

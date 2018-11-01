@@ -40,7 +40,7 @@ class ControllerMakeCommand extends GeneratorCommand
      */
     public function getDestinationFilePath()
     {
-        $path = $this->laravel['modules']->getModulePath($this->getModuleName());
+        $path = $this->laravel['modules']->getModulePath(str_replace('_', DIRECTORY_SEPARATOR, $this->getModuleName()));
 
         $controllerPath = GenerateConfigReader::read('controller');
 

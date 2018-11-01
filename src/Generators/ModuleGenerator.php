@@ -20,6 +20,13 @@ class ModuleGenerator extends Generator
     protected $name;
 
     /**
+     * The project name in which the module will be created.
+     *
+     * @var string
+     */
+    protected $project;
+
+    /**
      * The laravel config instance.
      *
      * @var Config
@@ -76,7 +83,11 @@ class ModuleGenerator extends Generator
         Filesystem $filesystem = null,
         Console $console = null
     ) {
-        $this->name = $name;
+        $name = explode('/', $name);
+
+        $this->name = sizeof($name) > 1? $name[1]: $name[0];
+        $this->project = sizeof($name) > 1? $name[0]: null;
+
         $this->config = $config;
         $this->filesystem = $filesystem;
         $this->console = $console;
@@ -102,9 +113,19 @@ class ModuleGenerator extends Generator
      *
      * @return string
      */
-    public function getName()
+    public function getName($project = true)
     {
-        return Str::studly($this->name);
+        return $project? Str::studly($this->project)."_".Str::studly($this->name): Str::studly($this->name);
+    }
+
+    /**
+     * Get project name in which module will be created
+     *
+     * @return string
+     */
+    public function getProject()
+    {
+        return Str::studly($this->project);
     }
 
     /**
@@ -282,7 +303,7 @@ class ModuleGenerator extends Generator
                 continue;
             }
 
-            $path = $this->module->getModulePath($this->getName()) . '/' . $folder->getPath();
+            $path = $this->module->getModulePath(str_replace('_', DIRECTORY_SEPARATOR, $this->getName())) . DIRECTORY_SEPARATOR . $folder->getPath();
 
             $this->filesystem->makeDirectory($path, 0755, true);
             if (config('modules.stubs.gitkeep')) {
@@ -307,7 +328,7 @@ class ModuleGenerator extends Generator
     public function generateFiles()
     {
         foreach ($this->getFiles() as $stub => $file) {
-            $path = $this->module->getModulePath($this->getName()) . $file;
+            $path = $this->module->getModulePath(str_replace('_', DIRECTORY_SEPARATOR, $this->getName())) . $file;
 
             if (!$this->filesystem->isDirectory($dir = dirname($path))) {
                 $this->filesystem->makeDirectory($dir, 0775, true);
@@ -325,13 +346,13 @@ class ModuleGenerator extends Generator
     public function generateResources()
     {
         $this->console->call('module:make-seed', [
-            'name' => $this->getName(),
+            'name' => $this->getName(false),
             'module' => $this->getName(),
             '--master' => true,
         ]);
 
         $this->console->call('module:make-provider', [
-            'name' => $this->getName() . 'ServiceProvider',
+            'name' => $this->getName(false) . 'ServiceProvider',
             'module' => $this->getName(),
             '--master' => true,
         ]);
@@ -341,7 +362,7 @@ class ModuleGenerator extends Generator
         ]);
 
         $this->console->call('module:make-controller', [
-            'controller' => $this->getName() . 'Controller',
+            'controller' => $this->getName(false) . 'Controller',
             'module' => $this->getName(),
         ]);
     }
@@ -405,7 +426,7 @@ class ModuleGenerator extends Generator
      */
     private function generateModuleJsonFile()
     {
-        $path = $this->module->getModulePath($this->getName()) . 'module.json';
+        $path = $this->module->getModulePath(str_replace('_', DIRECTORY_SEPARATOR, $this->getName())) . 'module.json';
 
         if (!$this->filesystem->isDirectory($dir = dirname($path))) {
             $this->filesystem->makeDirectory($dir, 0775, true);
@@ -422,7 +443,7 @@ class ModuleGenerator extends Generator
      */
     private function cleanModuleJsonFile()
     {
-        $path = $this->module->getModulePath($this->getName()) . 'module.json';
+        $path = $this->module->getModulePath(str_replace('_', DIRECTORY_SEPARATOR, $this->getName())) . 'module.json';
 
         $content = $this->filesystem->get($path);
         $namespace = $this->getModuleNamespaceReplacement();

@@ -82,7 +82,7 @@ class SeedMakeCommand extends GeneratorCommand
     {
         $this->clearCache();
 
-        $path = $this->laravel['modules']->getModulePath($this->getModuleName());
+        $path = $this->laravel['modules']->getModulePath(str_replace('_', DIRECTORY_SEPARATOR, $this->getModuleName()));
 
         $seederPath = GenerateConfigReader::read('seeder');
 
