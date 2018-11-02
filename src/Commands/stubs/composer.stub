@@ -19,7 +19,7 @@
     },
     "autoload": {
         "psr-4": {
-            "$NAMESPACE$\\$STUDLY_CLASS$\\": ["/", "app/"]
+            "$NAMESPACE$\\$STUDLY_CLASS$\\": "app/"
         }
     }
 }
