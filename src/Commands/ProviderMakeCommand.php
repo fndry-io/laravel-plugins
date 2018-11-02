@@ -88,6 +88,7 @@ class ProviderMakeCommand extends GeneratorCommand
             'PATH_CONFIG'       => GenerateConfigReader::read('config')->getPath(),
             'MIGRATIONS_PATH'   => GenerateConfigReader::read('migration')->getPath(),
             'FACTORIES_PATH'    => GenerateConfigReader::read('factory')->getPath(),
+            'DIR'               => $this->getDir()
         ]))->render();
     }
 

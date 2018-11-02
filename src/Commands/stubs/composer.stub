@@ -10,16 +10,16 @@
     "extra": {
         "laravel": {
             "providers": [
-                "$MODULE_NAMESPACE$\\$STUDLY_NAME$\\Providers\\$STUDLY_NAME$ServiceProvider"
+                "$NAMESPACE$\\$STUDLY_CLASS$\\Providers\\$STUDLY_CLASS$ServiceProvider"
             ],
             "aliases": {
-                
+
             }
         }
     },
     "autoload": {
         "psr-4": {
-            "$MODULE_NAMESPACE$\\$STUDLY_NAME$\\": ""
+            "$NAMESPACE$\\$STUDLY_CLASS$\\": ["/", "app/"]
         }
     }
 }

@@ -493,7 +493,45 @@ class ModuleGenerator extends Generator
      */
     protected function getModuleNamespaceReplacement()
     {
-        return str_replace('\\', '\\\\', $this->module->config('namespace'));
+        return $this->getProject()?
+            str_replace('\\', '\\\\', $this->module->config('namespace')).'\\\\'.$this->getProject()
+            :str_replace('\\', '\\\\', $this->module->config('namespace'));
+    }
+
+    /**
+     * Get replacement for $NAMESPACE$.
+     *
+     * @return string
+     */
+    protected function getNamespaceReplacement()
+    {
+        return $this->getProject()?
+            str_replace('\\', '\\\\', $this->module->config('namespace')).'\\\\'.$this->getProject()
+            :str_replace('\\', '\\\\', $this->module->config('namespace'));
+    }
+
+    /**
+     * Get replacement for $PROJECT_NAMESPACE$.
+     *
+     * @return string
+     */
+    protected function getProjectNamespaceReplacement()
+    {
+        return $this->getProject()?
+                    str_replace('\\', DIRECTORY_SEPARATOR, $this->module->config('namespace'))
+                    .DIRECTORY_SEPARATOR.$this->getProject().DIRECTORY_SEPARATOR.$this->getName(false)
+                    :str_replace('\\', DIRECTORY_SEPARATOR, $this->module->config('namespace'))
+                    .DIRECTORY_SEPARATOR.$this->getName(false);
+    }
+
+    /**
+     * Get replacement for $STUDLY_CLASS$.
+     *
+     * @return string
+     */
+    protected function getStudlyClassReplacement()
+    {
+        return $this->getName(false);
     }
 
     /**
@@ -515,4 +553,5 @@ class ModuleGenerator extends Generator
     {
         return $this->module->config('composer.author.email');
     }
+
 }

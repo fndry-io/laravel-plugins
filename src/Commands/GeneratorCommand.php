@@ -97,4 +97,12 @@ abstract class GeneratorCommand extends Command
 
         return trim($namespace, '\\');
     }
+
+    /**
+     * @return string
+     */
+    protected function getDir(){
+        return $this->laravel['modules']->config('namespace').'/'.str_replace('_', DIRECTORY_SEPARATOR, $this->getModuleName());
+    }
+
 }
