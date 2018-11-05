@@ -27,4 +27,16 @@ class $CLASS$ extends FormRequest
     {
         return true;
     }
+
+    /**
+     * Get available fields based on the permissions of the currently logged in user.
+     *
+     * @return array
+     */
+    public function fields()
+    {
+        return [
+            //
+        ];
+    }
 }
