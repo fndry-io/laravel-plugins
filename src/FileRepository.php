@@ -373,6 +373,7 @@ abstract class FileRepository implements RepositoryInterface, Countable
      */
     public function findOrFail($name)
     {
+        $name = preg_replace('/\/\\/', '_', $name);
         $module = $this->find($name);
 
         if ($module !== null) {
