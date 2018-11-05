@@ -111,11 +111,12 @@ class ModuleGenerator extends Generator
     /**
      * Get the name of module will created. By default in studly case.
      *
+     * @param bool $project | if project name should be included
      * @return string
      */
     public function getName($project = true)
     {
-        return $project? Str::studly($this->project)."_".Str::studly($this->name): Str::studly($this->name);
+        return $project && $this->getProject()? Str::studly($this->project)."_".Str::studly($this->name): Str::studly($this->name);
     }
 
     /**
