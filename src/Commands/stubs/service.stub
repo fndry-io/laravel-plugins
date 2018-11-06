@@ -1,0 +1,41 @@
+<?php
+
+namespace $CLASS_NAMESPACE$;
+
+use Foundry\Services\Service as FoundryService;
+use $FORM_NAMESPACE$ as Form;
+
+
+class $CLASS$ extends FoundryService
+{
+
+    /**
+     * Create or Update resource
+
+     * @return array
+     */
+    static function insert(Form $form, $id)
+    {
+        // TODO: Implement getTemplateContents() method.
+    }
+
+    /**
+     * Get the specified resource or all.
+
+     * @return array
+     */
+    static function get($id)
+    {
+        // TODO: Implement getTemplateContents() method.
+    }
+
+    /**
+     * Delete the specified resource.
+
+     * @return array
+     */
+    public function destroy($id)
+    {
+        // TODO: Implement getTemplateContents() method.
+    }
+}
