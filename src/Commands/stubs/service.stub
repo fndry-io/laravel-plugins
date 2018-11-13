@@ -25,9 +25,14 @@ class $CLASS$ extends FoundryService
             $model = Model::query()->where('id', $id)->first();
         }
 
-        $model->fill($form->inputs());
+        $resp = $form->inputs();
 
-        // TODO: Implement getTemplateContents() method.
+        if($resp['status'])
+            $model->fill($resp['data']);
+        else
+            return $resp;
+
+        // TODO: Implement custom logic.
 
         if($model->save()){
             return Response::response();
@@ -43,7 +48,7 @@ class $CLASS$ extends FoundryService
      */
     static function get($id)
     {
-        // TODO: Implement getTemplateContents() method.
+        // TODO: Implement custom logic
     }
 
     /**
@@ -53,6 +58,6 @@ class $CLASS$ extends FoundryService
      */
     public function destroy($id)
     {
-        // TODO: Implement getTemplateContents() method.
+        // TODO: Implement custom logic.
     }
 }
