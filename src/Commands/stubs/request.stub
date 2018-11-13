@@ -40,7 +40,7 @@ class $CLASS$ extends FormRequest
       *
       * @return array
       */
-     public function fields()
+     static function fields()
      {
          // TODO: Implement fields() method.
          return [
