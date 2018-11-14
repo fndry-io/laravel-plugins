@@ -67,21 +67,29 @@ class $CLASS$ extends FormRequest
      /**
       * Get Model Form
       *
+      * @param null $id | resource id if editing
+      *
       * @return mixed
       */
-     static function getFormView()
+     static function getFormView($id = null)
      {
          $form = new FormView($FORM$);
 
-         //TODO add form urls
-         $form->setFormUrls('');
+         if($id){
+             //Todo Get model and pass it onto the form
+             //$form->setModel();
+         }
 
          $row1 = new FormRow();
 
          //TODO add fields to row1
          //TODO Add additional rows if required
 
-         $form->addRow($row1);
+         $form->addRow($row1)
+           //Todo add more rows if required
+
+           //TODO add form urls
+            ->setFormUrls('');
 
          return Response::response(['form' => $form]);
      }
