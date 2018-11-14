@@ -61,6 +61,7 @@ class RequestMakeCommand extends GeneratorCommand
         return (new Stub('/request.stub', [
             'NAMESPACE' => $this->getClassNamespace($module),
             'CLASS'     => $this->getClass(),
+            'FORM'      => $this->getClass().'_form'
         ]))->render();
     }
 

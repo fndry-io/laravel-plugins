@@ -3,6 +3,9 @@
 namespace $NAMESPACE$;
 
 use Foundry\Requests\Form as FormRequest;
+use Foundry\Requests\Response;
+use Foundry\Requests\Types\FormRow;
+use Foundry\Requests\Types\FormView;
 
 class $CLASS$ extends FormRequest
 {
@@ -59,5 +62,27 @@ class $CLASS$ extends FormRequest
          return [
              //
          ];
+     }
+
+     /**
+      * Get Model Form
+      *
+      * @return mixed
+      */
+     static function getFormView()
+     {
+         $form = new FormView($FORM$);
+
+         //TODO add form urls
+         $form->setFormUrls('');
+
+         $row1 = new FormRow();
+
+         //TODO add fields to row1
+         //TODO Add additional rows if required
+
+         $form->addRow($row1);
+
+         return Response::response(['form' => $form]);
      }
 }
