@@ -83,6 +83,7 @@ class ProviderMakeCommand extends GeneratorCommand
             'NAME'              => $this->getFileName(),
             'STUDLY_NAME'       => $module->getStudlyName(),
             'MODULE_NAMESPACE'  => $this->laravel['modules']->config('namespace'),
+            'MODULE_DIR'        => str_replace(base_path() . DIRECTORY_SEPARATOR, "", $this->laravel['modules']->config('paths.modules')),
             'PATH_VIEWS'        => GenerateConfigReader::read('views')->getPath(),
             'PATH_LANG'         => GenerateConfigReader::read('lang')->getPath(),
             'PATH_CONFIG'       => GenerateConfigReader::read('config')->getPath(),
