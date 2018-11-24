@@ -37,7 +37,7 @@ class $CLASS$ extends FoundryService
         if($model->save()){
             return Response::response();
         }else{
-            return Response::errorResponse(APIException::UNKNOWN_ERROR, 500);
+            return Response::errorResponse(__("Oops, An error occurred. Please try again later!"), 500);
         }
     }
 
