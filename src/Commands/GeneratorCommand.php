@@ -102,7 +102,7 @@ abstract class GeneratorCommand extends Command
      * @return string
      */
     protected function getDir(){
-		return str_replace(base_path() . DIRECTORY_SEPARATOR, '', $this->laravel['modules']->config('paths.modules')) . DIRECTORY_SEPARATOR . str_replace('_', DIRECTORY_SEPARATOR, $this->getModuleName());
+        return $this->laravel['modules']->config('namespace').'/'.str_replace('_', DIRECTORY_SEPARATOR, $this->getModuleName());
     }
 
 }

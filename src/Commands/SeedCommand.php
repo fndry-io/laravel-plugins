@@ -2,6 +2,7 @@
 
 namespace Nwidart\Modules\Commands;
 
+use function Composer\Autoload\includeFile;
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Support\Str;
@@ -37,6 +38,7 @@ class SeedCommand extends Command
      */
     public function handle()
     {
+
         try {
             if ($name = $this->argument('module')) {
                 $name = Str::studly($name);
@@ -96,14 +98,19 @@ class SeedCommand extends Command
         $seeders = [];
         $name = $module->getName();
         $config = $module->get('migration');
+
+	    $path = $this->getSeederPath($module);
+
         if (is_array($config) && array_key_exists('seeds', $config)) {
             foreach ((array)$config['seeds'] as $class) {
+	            includeFile($path . DIRECTORY_SEPARATOR . $class . '.php');
                 if (class_exists($class)) {
                     $seeders[] = $class;
                 }
             }
         } else {
             $class = $this->getSeederName($name); //legacy support
+	        includeFile($path . DIRECTORY_SEPARATOR . $class . '.php');
             if (class_exists($class)) {
                 $seeders[] = $class;
             }
@@ -149,13 +156,24 @@ class SeedCommand extends Command
     public function getSeederName($name)
     {
         $name = Str::studly($name);
-
-        $namespace = $this->laravel['modules']->config('namespace');
-        $seederPath = GenerateConfigReader::read('seeder');
-        $seederPath = str_replace('/', '\\', $seederPath->getPath());
-
-        return $namespace . '\\' . $name . '\\' . $seederPath . '\\' . $name . 'DatabaseSeeder';
+        return $name . 'DatabaseSeeder';
     }
+
+	/**
+	 * Get master database seeder name for the specified module.
+	 *
+	 * @param string $name
+	 *
+	 * @return string
+	 */
+	public function getSeederPath($module)
+	{
+		$base = $this->laravel['modules']->config('paths.modules');
+		$seederPath = GenerateConfigReader::read('seeder');
+		$seederPath = $module->getPath() . DIRECTORY_SEPARATOR . $seederPath->getPath();
+		$seederPath = str_replace(['/','\\'], DIRECTORY_SEPARATOR, $seederPath);
+		return $seederPath;
+	}
 
     /**
      * Report the exception to the exception handler.

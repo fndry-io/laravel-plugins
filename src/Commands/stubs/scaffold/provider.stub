@@ -60,7 +60,7 @@ class $CLASS$ extends ServiceProvider
      */
     public function registerViews()
     {
-        $viewPath = resource_path('views/$MODULE_DIR$/$LOWER_NAME$');
+        $viewPath = resource_path('views/modules/$LOWER_NAME$');
 
         $sourcePath = base_path('$DIR$/$PATH_VIEWS$');
 
@@ -69,7 +69,7 @@ class $CLASS$ extends ServiceProvider
         ],'views');
 
         $this->loadViewsFrom(array_merge(array_map(function ($path) {
-            return $path . '/$MODULE_DIR$/$LOWER_NAME$';
+            return $path . '/modules/$LOWER_NAME$';
         }, \Config::get('view.paths')), [$sourcePath]), '$LOWER_NAME$');
     }
 
@@ -80,7 +80,7 @@ class $CLASS$ extends ServiceProvider
      */
     public function registerTranslations()
     {
-        $langPath = resource_path('lang/$MODULE_DIR$/$LOWER_NAME$');
+        $langPath = resource_path('lang/modules/$LOWER_NAME$');
 
         if (is_dir($langPath)) {
             $this->loadTranslationsFrom($langPath, '$LOWER_NAME$');
