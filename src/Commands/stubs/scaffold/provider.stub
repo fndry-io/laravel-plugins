@@ -4,6 +4,7 @@ namespace $NAMESPACE$;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Database\Eloquent\Factory;
+use Illuminate\Support\Facades\Gate;
 
 class $CLASS$ extends ServiceProvider
 {
@@ -25,6 +26,8 @@ class $CLASS$ extends ServiceProvider
         $this->registerConfig();
         $this->registerViews();
         $this->registerFactories();
+        $this->registerCommands();
+        $this->registerGates();
         $this->loadMigrationsFrom(base_path('$DIR$/$MIGRATIONS_PATH$'));
     }
 
@@ -102,6 +105,18 @@ class $CLASS$ extends ServiceProvider
     }
 
     /**
+	 * Registers the commands for this service provider
+	 *
+	 * @return void
+	 */
+    public function registerCommands()
+    {
+	    $this->commands([
+		   //TODO add comments
+	    ]);
+    }
+
+    /**
      * Get the services provided by the provider.
      *
      * @return array
@@ -109,5 +124,12 @@ class $CLASS$ extends ServiceProvider
     public function provides()
     {
         return [];
+    }
+
+    public function registerGates()
+    {
+        Gate::before(function ($user, $ability) {
+            //TODO implement gate
+        });
     }
 }

@@ -6,43 +6,47 @@ use Foundry\Requests\Form as FormRequest;
 use Foundry\Requests\Response;
 use Foundry\Requests\Types\FormRow;
 use Foundry\Requests\Types\FormView;
+use Illuminate\Database\Eloquent\Model;
 
 class $CLASS$ extends FormRequest
 {
+
+     /**
+     * Constructor
+     */
      public function __construct($inputs)
      {
         parent::__construct($inputs);
      }
 
      /**
-      * Get the validation rules that apply to the request.
-      *
-      * @return array
-      */
-     public function rules()
-     {
-         // TODO: Implement rules() method.
-         return [
-             //
-         ];
+      * {@inheritdoc}
+     */
+     static public function rules(Model $model = null): array {
+        // TODO: return rules.
+        return [
+
+        ];
      }
 
      /**
-      * Determine if the user is authorized to make this request.
-      *
-      * @return bool
-      */
-     public function authorize()
-     {
-         // TODO: Implement authorize() method.
-         return true;
+     * {@inheritdoc}
+     */
+     static function service() {
+        //TODO return Service class for this resource
+     }
+
+    /**
+     * {@inheritdoc}
+     */
+     public function authorize() {
+        // TODO: Implement authorize() method.
+        return true;
      }
 
      /**
-      * Get available fields based on the permissions of the currently logged in user.
-      *
-      * @return array
-      */
+     * {@inheritdoc}
+     */
      static function fields()
      {
          // TODO: Implement fields() method.
@@ -50,6 +54,14 @@ class $CLASS$ extends FormRequest
              //
          ];
      }
+
+    /**
+	 * {@inheritdoc}
+	 */
+	 public function handle(): Response
+	 {
+		 //TODO implement handle method
+	 }
 
      /**
       * Get custom error messages for rules
@@ -71,26 +83,27 @@ class $CLASS$ extends FormRequest
       *
       * @return mixed
       */
-     static function getFormView($id = null)
+     static function getFormView($id = null) : FormView
      {
-         $form = new FormView($FORM$);
+         $form = new FormView('$FORM$');
 
-         if($id){
-             //Todo Get model and pass it onto the form
-             //$form->setModel();
+         //get the model and set it to the form view
+         if ( $id && $model = static::model( $id ) ) {
+             $form->setModel( $model );
+         } else {
+             $model = null;
          }
+
+        $form->setRules( static::rules( $model ) );
 
          $row1 = new FormRow();
 
          //TODO add fields to row1
          //TODO Add additional rows if required
 
-         $form->addRow($row1)
+         $form->addRow($row1);
            //Todo add more rows if required
 
-           //TODO add form urls
-            ->setFormUrls('');
-
-         return Response::response(['form' => $form]);
+         return $form;
      }
 }

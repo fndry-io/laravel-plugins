@@ -9,64 +9,105 @@ use Illuminate\Routing\Controller;
 class $CLASS$ extends Controller
 {
     /**
-     * Display a listing of the resource.
-     * @return Response
-     */
-    public function index()
+    * Available $LOWER_NAME$ routes
+    */
+    protected $routes = [
+        'browse'        => '$LOWER_NAME$.browse',
+        'read'          => '$LOWER_NAME$.read',
+        'edit'          => '$LOWER_NAME$.edit',
+        'edit.handle'   => '$LOWER_NAME$.edit.handle',
+        'add'           => '$LOWER_NAME$.add',
+        'add.handle'    => '$LOWER_NAME$.add.handle',
+        'delete.handle' => '$LOWER_NAME$.delete.handle'
+    ];
+
+    /**
+    * Available $LOWER_NAME$ route views
+    */
+    protected $views = [
+        'browse' => '$LOWER_NAME$.browse',
+        'read'   => '$LOWER_NAME$.read',
+        'edit'   => '$LOWER_NAME$.edit',
+        'add'    => '$LOWER_NAME$.add'
+    ];
+
+    public function __construct()
     {
-        return view('$LOWER_NAME$::index');
+        //TODO add permission
+        $this->middleware([]);
     }
 
     /**
-     * Show the form for creating a new resource.
-     * @return Response
+     * Get resources
+     *
+     * @param Request $request
+     *
+     * @return mixed
      */
-    public function create()
-    {
-        return view('$LOWER_NAME$::create');
+    public function browse( Request $request ) {
+        //TODO implement logic
+        return view( $this->views['browse'], [] );
     }
 
     /**
-     * Store a newly created resource in storage.
-     * @param  Request $request
-     * @return Response
+     * Get a resource
+     *
+     * @return mixed
      */
-    public function store(Request $request)
-    {
+    public function read( $id ) {
+        //TODO implement logic
     }
 
     /**
-     * Show the specified resource.
-     * @return Response
+     * Show the edit form
+     *
+     * @param Request $request
+     * @param int $id
+     *
+     * @return \Illuminate\Contracts\View\View
      */
-    public function show()
-    {
-        return view('$LOWER_NAME$::show');
+    public function edit( Request $request, $id ) {
+       //TODO implement logic
     }
 
     /**
-     * Show the form for editing the specified resource.
-     * @return Response
+     * Edit a resource
+     *
+     * @param Request $request
+     *
+     * @return mixed
      */
-    public function edit()
-    {
-        return view('$LOWER_NAME$::edit');
+    public function handleEdit( Request $request, $id ) {
+        //TODO implement logic
     }
 
     /**
-     * Update the specified resource in storage.
-     * @param  Request $request
-     * @return Response
+     * Show the add form
+     *
+     * @return \Illuminate\Contracts\View\View
      */
-    public function update(Request $request)
-    {
+    public function add( Request $request ) {
+        //TODO implement logic
     }
 
     /**
-     * Remove the specified resource from storage.
-     * @return Response
+     * Add a resource
+     *
+     * @param Request $request
+     *
+     * @return mixed
      */
-    public function destroy()
-    {
+    public function handleAdd( Request $request ) {
+        //TODO implement logic
+    }
+
+    /**
+     * Delete a resource
+     *
+     * @return mixed
+     * @throws \Exception
+     */
+    public function delete( $id ) {
+        //TODO implement logic
     }
 }

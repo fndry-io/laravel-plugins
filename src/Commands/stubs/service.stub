@@ -7,57 +7,111 @@ use Foundry\Requests\Response;
 use Foundry\Services\Service as FoundryService;
 use $FORM_NAMESPACE$ as Form;
 use $MODEL_NAMESPACE$ as Model;
+use Illuminate\Database\Eloquent\Model as BaseModel;
 
 class $CLASS$ extends FoundryService
 {
 
     /**
+	 * {@inheritdoc}
+	 */
+	static function model($id): BaseModel
+	{
+		//TODO return resource model
+	}
+
+    /**
+	 * Get resources
+	 *
+	 * @param \Closure $closure A closure which will be given the Builder as the first parameter
+	 *
+	 * @return Response
+	 */
+	static public function find(\Closure $closure = null): Response
+	{
+		$query = Model::query();
+
+		//TODO add extra logic, e.g ordering, etc...
+		if ($closure) {
+			$closure($query);
+		}
+
+		//todo apply default limit using settings
+
+		return Response::success($query->paginate(20));
+	}
+
+    /**
+	 * Get the specified resource or all.
+	 *
+	 * @param $id
+	 *
+	 * @return Response
+	 */
+	static function get($id)
+	{
+		if ($id && $resource = static::model($id)) {
+			return Response::success($resource);
+		} else {
+			return Response::error(__("Requested resource was not found"), 404);
+		}
+	}
+
+    /**
      * Create or Update resource
+     *
      * @param Form $form
      * @param $id
-     * @return array
+     * @return Response
      */
-    static function insert(Form $form, $id)
+    static function upsert(Form $form, $id)
     {
         $model = new Model();
 
-        if($id){
-            $model = Model::query()->where('id', $id)->first();
+        if($id && !$model = Model::query()->where('id', $id)->first()){
+            return Response::error(__("Requested resource was not found"), 404);
         }
 
-        $resp = $form->inputs();
+        $response = $form->validate();
 
-        if($resp['status'])
-            $model->fill($resp['data']);
-        else
-            return $resp;
-
-        // TODO: Implement custom logic.
+        if($response->isSuccess()) {
+        	$inputs = $response->getData();
+	        $model->fill($inputs);
+	        //TODO add additional logic if required
+        } else {
+	        return $response;
+        }
 
         if($model->save()){
-            return Response::response();
+        	//TODO add additional logic if required
+            return Response::success($model);
         }else{
-            return Response::errorResponse(__("Oops, An error occurred. Please try again later!"), 500);
+            return Response::error(__("Unable to save resource"), 500);
         }
     }
 
-    /**
-     * Get the specified resource or all.
-     * @param $id
-     * @return array
-     */
-    static function get($id)
-    {
-        // TODO: Implement custom logic
-    }
 
     /**
      * Delete the specified resource.
+
      * @param $id
-     * @return array
+     * @return Response
+     * @throws \Exception
      */
-    public function destroy($id)
+    static public function destroy($id)
     {
-        // TODO: Implement custom logic.
+        $model = Model::query()->where('id', $id)->first();
+
+        if (!$model) {
+            return Response::error(__("Requested model was not found"), 404);
+        }
+
+        //TODO implement custom logic if required
+
+        if($model->delete()){
+            return Response::success();
+        }else{
+            return Response::error(__("Unable to delete resource"), 500);
+        }
     }
 }
